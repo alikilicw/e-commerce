@@ -1,0 +1,162 @@
+{% load static %}
+
+{% include '../Partials/Account/header.html' %}
+<body>
+
+    <!-- Topbar Start -->
+    {% include '../Partials/topbar.html' %}
+    <!-- Topbar End -->
+
+    <div class="navbar-small">
+        {% include '../Partials/Detail/navbar.html' %}
+    </div>  
+    
+    <div class="main">
+
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+
+                    <div class="signup-form" id="company-signup-form">
+                        <h2 class="form-title">Kayıt Ol - Şirket</h2>
+                        <form method="POST" class="register-form" id="company-register-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="company-name" maxlength="100" required id="company-name" placeholder="Şirket Adı"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="number" name="tax-no" required oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" id="company-tax-no" placeholder="Vergi Numarası"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="username" required id="company-username" placeholder="Kullanıcı Adı"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" required id="company-email" placeholder="Email"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" required id="company-password" placeholder="Şifre"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="re_password" required id="company-repassword" placeholder="Şifre Yeniden"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="agree-term" id="company-agree-term" class="agree-term" />
+                                <label for="company-agree-term" class="label-agree-term"><span><span></span></span><a href="#" class="term-service">Kullanıcı sözleşmesini</a> kabul ediyorum.</label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" class="form-submit" value="Kayıt Ol"/>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="signup-form" id="personal-signup-form">
+                        <h2 class="form-title">Kayıt Ol - Kişisel Üretici</h2>
+                        <form method="POST" class="register-form" id="personal-manu-register-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="first-name" maxlength="150" required id="personal-manu-first-name" placeholder="Ad"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="last-name" maxlength="150" required id="personal-manu-last-name" placeholder="Soyad"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="name" maxlength="100" id="personal-manu-name" placeholder="Unvan (Zorunlu Değil)"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="number" name="tc" required oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" id="personal-manu-tc"  placeholder="TC"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="username" required id="personal-manu-username" placeholder="Kullanıcı Adı"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" required id="personal-manu-email" placeholder="Email"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" required id="personal-manu-password" placeholder="Şifre"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="re_password" required id="personal-manu-repassword" placeholder="Şifre Yeniden"/>
+                            </div>
+                            <div class="form-group"> 
+                                <input type="checkbox" name="agree-check" id="personal-manu-agree-term" class="agree-term" />
+                                <label for="personal-manu-agree-term" class="label-agree-term"><span><span></span></span><a href="#" class="term-service">Kullanıcı sözleşmesini</a> kabul ediyorum.</label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" class="form-submit" value="Kayıt Ol"/>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="signup-form" id="customer-signup-form">
+                        <h2 class="form-title">Kayıt Ol - Müşteri</h2>
+                        <form method="POST" class="register-form" id="customer-register-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="first-name" required maxlength="150" id="customer-first-name" placeholder="Ad"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="last-name" required maxlength="150" id="customer-last-name" placeholder="Soyad"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="username" required id="customer-username" placeholder="Kullanıcı Adı"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" required id="customer-email" placeholder="Email"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" required id="customer-password" placeholder="Şifre"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="re_password" required id="customer-repassword" placeholder="Şifre Yeniden"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="agree-term" id="customer-agree-term" class="agree-term" />
+                                <label for="customer-agree-term" class="label-agree-term"><span><span></span></span><a href="#" class="term-service">Kullanıcı sözleşmesini</a> kabul ediyorum.</label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" class="form-submit" value="Kayıt Ol"/>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="signup-image justify-content">
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="company-signup" class="form-submit1" value="Şirket Kaydı"/>
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="personal-signup" class="form-submit1" value="Kişisel Üretici Kaydı"/>
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="customer-signup" class="form-submit1" value="Müşteri Kaydı"/>
+                        </div>
+                        <a href="{% url 'loginPage' %}" class="signup-image-link">Hesabım var.</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    {% include '../Partials/Account/footer.html' %}
+</body>
+</html>

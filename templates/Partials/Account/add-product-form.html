@@ -1,0 +1,95 @@
+{% load static %}
+<div class="popup" id="popup">
+    <div class="popup-content bg-secondary">
+        <h1 class="heading text-muted mb-4">Ürün Ekleme</h1>
+        <button class="btn btn-info ml-auto mr-2 mb-0 close" id="close-add-product-form">Kapat</button>
+        
+        <form action="{% url 'add-product' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group focused">
+                    <label class="form-control-label" for="input-full-address">Ürün İsmi</label>
+                        <input id="input-product-name" name="name" class="form-control form-control-alternative" placeholder="İsim" type="text">
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group focused">
+                    <label class="form-control-label" for="input-full-address">Ürün Fiyatı</label>
+                        <input id="input-product-price" name="price" class="form-control form-control-alternative" placeholder="Fiyat" type="text">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group focused">
+                    <label class="form-control-label" for="input-product-currency">Para Birimi</label>
+                        <select name="currency" class="form-control form-control-alternative" id="input-product-currency">
+                            <option value="">--</option>
+                            {% for currency in currencies %}
+                                <option value="{{currency.pk}}">{{currency.currency_symbol}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group focused">
+                    <label class="form-control-label" for="input-product-category">Kategori</label>
+                        <select name="category" class="form-control form-control-alternative" id="input-product-category">
+                            <option value="">--</option>
+                            {% for category in categories %}    
+                                <option value="{{category.pk}}">{{category.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group focused">
+                        <label class="form-control-label add-product-photo" for="input-product-photo-one"><ins>Yükle</ins> Fotoğraf 1<input type="file" id="input-product-photo-one" name="image1" accept="image/*" style="display: none;"></label>
+                        <img class="img-fluid" id="img-product-image-1" src="../../static/ProfilePageCss/empty_photo.jpg">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group focused">
+                        <label class="form-control-label add-product-photo" for="input-product-photo-two"><ins>Yükle</ins> Fotoğraf 2<input type="file" id="input-product-photo-two" name="image2" accept="image/*" style="display: none;"></label>
+                        <img class="img-fluid" id="img-product-image-2" src="../../static/ProfilePageCss/empty_photo.jpg">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group focused">
+                        <label class="form-control-label add-product-photo" for="input-product-photo-three"><ins>Yükle</ins> Fotoğraf 3<input type="file" id="input-product-photo-three" name="image3" accept="image/*" style="display: none;"></label>
+                        <img class="img-fluid" id="img-product-image-3" src="../../static/ProfilePageCss/empty_photo.jpg">
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="pl-lg-4">
+                <div class="form-group focused">
+                <label class="form-control-label">Açıklama</label>
+                    <textarea rows="4" class="form-control form-control-alternative" name="description" placeholder="Ürün Açıklaması.." id="input-product-description"></textarea>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group focused">
+                        <input type="submit" class="btn btn-info" value="Ürünü Oluştur">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

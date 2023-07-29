@@ -1,0 +1,37 @@
+{% load static %}
+
+{% include '../Partials/header.html' %}
+
+<body>
+    <!-- Topbar Start -->
+    {% include '../Partials/topbar.html' %}
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    {% include '../Partials/Detail/navbar.html' %} 
+    <!-- Navbar End -->
+
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+
+        <div class="col-lg-1"></div>
+        <!-- Shop Detail Start -->
+        {% include '../Partials/Detail/shopdetail.html' %}
+        <!-- Shop Detail End -->
+        <div class="col-lg-1"></div>
+
+        <div class="col-lg-1"></div>
+        <!-- Products Start -->
+        {% include '../Partials/Detail/products.html' %}
+        <!-- Products End -->
+        <div class="col-lg-1"></div>
+
+        </div>
+    </div>
+
+    <!-- Footer Start -->
+    {% include '../Partials/footer.html' %}
+    <!-- Footer End -->
+
+</body></html>

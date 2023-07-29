@@ -1,0 +1,120 @@
+{% load static %}
+<div class="col-lg-8 col-md-12">
+    <div class="row pb-3">
+
+        {% if product_length == 0 %}
+        <div class="col-md-12 text-center mt-5">
+            <p>Burada henüz ürün bulunmuyor..</p>
+        </div>
+        {% else %}
+        {% for current_product in products %}
+        <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+            <div class="card product-item border-0 mb-4">
+                <a href="{% url 'productDetailPage' current_product.slug %}">
+                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <img class="img-fluid w-100" src="{{current_product.image1.url}}" alt="">
+                    </div>
+                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                        <h6 class="text-truncate mb-3">{{current_product.name}}</h6>
+                    </div>
+                </a>
+                <div class="card-footer d-flex justify-content-between bg-light border">
+                    <span class="btn-sm text-dark p-0"><i class="fas fa-solid fa-location-dot text-primary mr-1"></i> {% if current_product.user.address.city %} {{current_product.user.address.city}} {% endif %} {% if current_product.user.address.district %} {{current_product.user.address.district}} {% endif %} </span>
+                    <span class="text-dark p-0"><i class="fas fa-solid fa-coins text-primary mr-1"></i>{{current_product.price}} {{current_product.currency.currency_symbol}}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div class="col-12 pb-1">
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center mb-3">
+
+                {% if filterby_word or country_name %}
+
+                <!-- Pagination state 1 -->
+
+                {% if products.number|add:'-1' != 1 and products.number != 1 %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page=1" aria-label="First">
+                          <span aria-hidden="true">1</span>
+                      </a>
+                  </li>
+                {% endif %}
+                {% if products.number > 3 %} 
+                <li class="page-item"><span class="page-link">...</span></li>
+                {% endif %}
+
+                {% if products.has_previous %}
+                <li class="page-item"><a class="page-link" href="{{absolute_url}}&page={{products.previous_page_number}}">{{products.number|add:'-1'}}</a></li>
+                {% endif %}
+                <li class="page-item active"><span class="page-link">{{products.number}}</span></li>  
+                {% if products.has_next %}
+                <li class="page-item"><a class="page-link" href="{{absolute_url}}&page={{products.next_page_number}}">{{products.number|add:'1'}}</a></li>
+                {% endif %}
+
+                {% if products.paginator.num_pages > products.number|add:'2'%} 
+                <li class="page-item"><span class="page-link">...</span></li>
+                {% endif %}
+
+                {% if products.number|add:'1' != products.paginator.num_pages and products.number != products.paginator.num_pages %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{products.paginator.num_pages}}" aria-label="Last">
+                          <span aria-hidden="true">{{products.paginator.num_pages}}</span>
+                      </a>
+                  </li>
+                {% endif %}
+
+                {% else %}
+
+                <!-- Pagination state 2 -->
+                <!-- <li class="page-item {% if products.number == 1 %} disabled {% endif %}">
+                  <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo; İlk Sayfa</span>
+                  </a>
+                </li> -->
+
+                {% if products.number|add:'-1' != 1 and products.number != 1 %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page=1" aria-label="First">
+                          <span aria-hidden="true">1</span>
+                      </a>
+                  </li>
+                {% endif %}
+                {% if products.number > 3 %} 
+                <li class="page-item"><span class="page-link">...</span></li>
+                {% endif %}
+
+                {% if products.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}">{{products.number|add:'-1'}}</a></li>
+                {% endif %}
+                <li class="page-item active"><span class="page-link">{{products.number}}</span></li>  
+                {% if products.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}">{{products.number|add:'1'}}</a></li>
+                {% endif %}
+
+                {% if products.paginator.num_pages > products.number|add:'2'%} 
+                <li class="page-item"><span class="page-link">...</span></li>
+                {% endif %}
+
+                {% if products.number|add:'1' != products.paginator.num_pages and products.number != products.paginator.num_pages %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{products.paginator.num_pages}}" aria-label="Last">
+                          <span aria-hidden="true">{{products.paginator.num_pages}}</span>
+                      </a>
+                  </li>
+                {% endif %}
+
+                <!-- <li class="page-item {% if products.number == products.paginator.num_pages %} disabled {% endif %}">
+                  <a class="page-link" href="?page={{products.paginator.num_pages}}" aria-label="Last">
+                    <span aria-hidden="true">&raquo; Son Sayfa</span>
+                  </a>
+                </li> -->
+
+                {% endif %}
+              </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>

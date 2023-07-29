@@ -1,0 +1,225 @@
+{% load static %}
+
+    <div class="card-body">
+        <form method="POST" id='changeInfos'>
+            {% csrf_token %}
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group focused">
+                        <label class="form-control-label" for="input-username">Kullanıcı Adı</label>
+                        <input type="text" id="input-username" required name="username" class="form-control form-control-alternative" placeholder="Username" value="{{user.username}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                        <label class="form-control-label" for="input-name">Şirket Unvanı</label>
+                            <input type="text" id="input-name" name="name" maxlength="100" required class="form-control form-control-alternative" placeholder="Şirket Unvanı" {% if user.name %} value="{{user.name}}" {% endif %}>
+                        </div>
+                    </div>
+                </div>
+                {% if user.groups.name == 'Personal' %}
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group focused">
+                            <label class="form-control-label" for="input-first-name">Ad</label>
+                            <input type="text" id="input-first-name" name="first_name" required maxlength="150" class="form-control form-control-alternative" placeholder="Ad" value="{{user.first_name}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group focused">
+                            <label class="form-control-label" for="input-last-name">Soyad</label>
+                            <input type="text" id="input-last-name" name="last_name" required maxlength="150" class="form-control form-control-alternative" placeholder="Soyad" value="{{user.last_name}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group focused">
+                            <label class="form-control-label" for="input-tc">TC</label>
+                            <input type="number" id="input-tc" name="last_name" required oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control form-control-alternative" placeholder="Soyad" value="{{user.tc}}">
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <hr class="my-4">
+            <!-- Address -->
+            <h6 class="heading-small text-muted mb-4">Adres Bilgileri</h6>
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group focused">
+                            <label class="form-control-label" for="input-full-address">Açık Adres</label>
+                            <input id="input-full-address" name="full_address" maxlength="250" class="form-control form-control-alternative" placeholder="Açık Adres" {% if user.address.full_address %} value="{{user.address.full_address}}" {% endif %} type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group focused">
+                            <label class="form-control-label" for="input-country">Ülke</label>
+                            <input type="text" id="input-country" name="country" maxlength="30" class="form-control form-control-alternative" placeholder="Ülke" {% if user.address.country %} value="{{user.address.country}}" {% endif %}>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group focused">
+                            <label class="form-control-label" for="input-city">İl</label>
+                            <input type="text" id="input-city" name="city" maxlength="50" class="form-control form-control-alternative" placeholder="İl" {% if user.address.city %} value="{{user.address.city}}" {% endif %}>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                        <label class="form-control-label" for="input-district">İlçe</label>
+                            <input type="text" id="input-district" name="district" maxlength="50" class="form-control form-control-alternative" placeholder="İlçe" {% if user.address.district %} value="{{user.address.district}}" {% endif %}>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                        <label class="form-control-label" for="input-neighbourhood">Mahalle</label>
+                            <input type="text" id="input-neighbourhood" name="neighbourhood" maxlength="70" class="form-control form-control-alternative" placeholder="Mahalle" {% if user.address.neighbourhood %} value="{{user.address.neighbourhood}}" {% endif %}>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <!-- Contact Info -->
+            <h6 class="heading-small text-muted mb-4">İletişim Bilgileri</h6>
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group focused">
+                            <label class="form-control-label" for="input-email">Email Adresi</label>
+                            <input type="email" id="input-email" required name="email" class="form-control form-control-alternative" placeholder="Email Adresi" value="{{user.email}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group focused">
+                        <label class="form-control-label" for="input-phone_num">Telefon Numarası</label>
+                        <input type="number" id="input-phone_num" required oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" name="phone_num" class="form-control form-control-alternative" placeholder="Telefon Numarası" {% if user.phone_num %} value="{{user.phone_num}}" {% else %} value="5" {% endif %}>
+                        </div>
+                    </div>
+                    {% if user.groups.name == 'Company' %}
+                        <div class="col-lg-4">
+                            <div class="form-group focused">
+                            <label class="form-control-label" for="input-tax_num">Vergi Numarası</label>
+                                <input type="number" id="input-tax_num" required oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" name="tax_num" class="form-control form-control-alternative" placeholder="Vergi Numarası" {% if user.tax_num %} value="{{user.tax_num}}" {% endif %}>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <hr class="my-4">
+            <!-- Description -->
+            <h6 class="heading-small text-muted mb-4">Firma Açıklaması</h6>
+            <div class="pl-lg-4">
+                <div class="form-group focused">
+                <label>Açıklama</label>
+                    <textarea rows="4" maxlength="2500" class="form-control form-control-alternative" name="description" placeholder="Hakkınızda.." id="input-description">{% if user.description %}{{user.description}}{% endif %}</textarea>
+                </div>
+            </div>
+            <!-- Save Button -->
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group focused">
+                        <input type="submit" class="btn btn-info" value="Değişiklikleri Kaydet">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+            <hr class="my-4">
+        <!-- Password Change -->
+        <form method="POST" id="changePass">
+            {% csrf_token %}
+            <h6 class="heading-small text-muted mb-4">Şifre Değiştir</h6>
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group focused">
+                        <label class="form-control-label" for="input-active-pass">Aktif Şifre</label>
+                        <input type="password" id="input-active-pass" required class="form-control form-control-alternative" name="active_pass" placeholder="Aktif Şifre">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group focused">
+                        <label class="form-control-label" for="input-new-pass">Yeni Şifre</label>
+                        <input type="password" id="input-new-pass" required class="form-control form-control-alternative" name="new_pass" placeholder="Yeni Şifre">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                        <label class="form-control-label" for="input-new-pass-again">Yeni Şifre Tekrar</label>
+                        <input type="password" id="input-new-pass-again" required class="form-control form-control-alternative" name="new_pass_again" placeholder="Yeni Şifre Tekrar">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <input type="checkbox" onclick="passShowFunc()">&nbsp; <span class="form-control-label">Şifreyi Göster</span>
+                    </div>  
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-4">
+                        <input type="submit" class="btn btn-md btn-info mb-0" value="Kaydet">
+                    </div>                   
+                </div>
+            </div>
+        </form>
+        <hr class="my-4">
+        
+        <!-- Images Change -->
+        <form method="POST" id="changeImages" action="{% url 'userChangeImages' current_profile.slug%}" enctype="multipart/form-data" id="images-change-form">
+            {% csrf_token %}
+            <!-- Images -->
+            <h6 class="heading-small text-muted mb-4">Arka Plan ve Profil Fotoğrafı Değiştir</h6>
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="form-group focused">
+                            <label class="form-control-label" for="input-cover-image">Arka Plan Fotoğrafı <br> <span style="font-size:12px">(Çözünürlüğü yüksek resimleri tercih ediniz.)</span> </label>
+                            <label class="btn btn-info" for="input-cover-image">Fotoğraf Yükle<input type="file" id="input-cover-image" name="cover_image" accept="image/*" style="display: none;"></label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group focused">
+                            <label class="form-control-label" for="input-email" id="img-cover-image-label">Mevcut Arka Plan</label>
+                            <img class="img-fluid" id="img-cover-image" {% if user.cover_image %} src="{{user.cover_image.url}}" {% else %} src="../../static/ProfilePageCss/default_background.jpg" {% endif %}>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group focused">
+                            <label class="form-control-label" for="input-profile-image">Profil Fotoğrafı</label><br>
+                            <label class="btn btn-info" for="input-profile-image">Fotoğraf Yükle<input type="file" id="input-profile-image" name="profile_image" accept="image/*" style="display: none;"></label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group focused">
+                            <label class="form-control-label" id="img-profile-image-label" for="input-phone_num">Mevcut Profil</label>
+                            <img class="img-fluid" id="img-profile-image" {% if user.profile_image %} src="{{user.profile_image.url}}" {% else %} src="{% static 'ProfilePageCss/empty_photo.jpg' %}" {% endif %}>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Save Button -->
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group focused">
+                        <input type="submit" class="btn btn-info" value="Resimleri Güncelle">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>

@@ -1,0 +1,305 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Üretim Nerede?</title>
+    <link href="{% static 'img/favicon.ico' %}" rel="icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'ProfilePageCss/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+  
+  <div class="main-content">
+    {% if user.is_authenticated and user.username == current_profile.username %}
+      {% include '../Partials/Account/add-product-form.html' %}
+    {% endif %}
+    <!-- Top navbar -->
+    <nav class="navbar navbar-top navbar-expand-md" id="navbar-main">
+      <div class="container-fluid">
+        <!-- Brand -->
+        <a class="h1 mb-0 pl-ms-4 text-white text-uppercase" href="{% url 'homePage' %}">ANASAYFA</a>
+      </div>
+    </nav>
+    <!-- Header -->
+    {% if current_profile.cover_image %}
+      <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 900px; background-image: url({{current_profile.cover_image.url}}); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;">
+    {% else %}
+      <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 900px; background-image: url(../../static/ProfilePageCss/default_background.jpg); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;">
+    {% endif %}
+      <!-- Mask -->
+      <span class="mask bg-gradient-default opacity-8"></span>
+      <!-- Header container -->
+      <div class="container-fluid d-flex align-items-center">
+        <div class="row">
+          <div class="col-md-12">
+            
+            {% if current_profile.name %}
+              <h1 class="display-2 text-uppercase text-white">{{current_profile.name}}</h1>
+            {% elif current_profile.first_name %}
+              <h1 class="display-2 text-uppercase text-white">{{current_profile.first_name}}</h1>
+            {% endif %}
+
+            {% if user.is_authenticated and user.username == current_profile.username %}
+              <input type="submit" class="btn btn-info"  id="edit-profile-button" value="Hesap Ayarları">
+              <input type="submit" class="btn btn-info"  id="see-products" value="Ürünleri Gör">
+            {% endif %}
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <div class="row">
+
+        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+          <div class="card card-profile shadow">
+            <div class="row justify-content-center">
+              <div class="col-lg-3 order-lg-2">
+                <div class="card-profile-image">
+                  <a href="#">
+                    <img class="rounded-circle" {% if current_profile.profile_image %} src="{{current_profile.profile_image.url}}" {% else %} src="{% static 'ProfilePageCss/empty_photo.jpg' %}" {% endif %}>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+              <!-- <div class="d-flex justify-content-between">
+                <a href="#" class="btn btn-sm btn-info mr-4">Connect</a>
+                <a href="#" class="btn btn-sm btn-default float-right">Message</a>
+              </div> -->
+            </div>
+            <div class="card-body pt-0 pt-md-4">
+              <div class="row">
+                <div class="col">
+                  <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                    <div>
+                      <span class="heading">22</span>
+                      <span class="description">Friends</span>
+                    </div>
+                    <div>
+                      <span class="heading">10</span>
+                      <span class="description">Photos</span>
+                    </div>
+                    <div>
+                      <span class="heading">89</span>
+                      <span class="description">Comments</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <h3>
+                  
+                </h3>
+                <div class="h5 font-weight-300">
+                  {% if current_profile.address.country %}
+                  <i class="fa-solid fa-location-dot"></i> &nbsp; {{current_profile.address.country}} {% if current_profile.address.city %},  {{current_profile.address.city}} {% if current_profile.address.district %}, {{current_profile.address.district}} {% if current_profile.address.neighbourhood %}, {{current_profile.address.neighbourhood}} <br>
+                  {% if current_profile.address.full_address %} {{current_profile.address.full_address}} {% endif %} {% endif %} {% endif %} {% endif %}
+                  {% else %}
+                  <i class="fa-solid fa-location-dot"></i> &nbsp; Belirtilmemiş
+                  {% endif %}
+                </div>
+                <div class="h5 mt-4">
+                  {% if current_profile.phone_num %}
+                  <i class="fa-solid fa-phone"></i> &nbsp; <a href="tel:{{current_profile.phone_num}}">{{current_profile.phone_num}}</a>
+                  {% else %}
+                  <i class="fa-solid fa-phone"></i> &nbsp;Belirtilmemiş
+                  {% endif %}
+                </div>
+                <hr class="my-4">
+                {% if current_profile.description %}
+                  <p>{{current_profile.description}}</p>
+                {% else %}
+                  <p> Firma açıklaması bulunmuyor. </p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% if user.is_authenticated and user.username == current_profile.username %}
+          <div class="col-xl-8 order-xl-1" id="edit-profile-stage">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">Hesap Ayarları</h3>
+                </div>
+              </div>
+            </div>
+            {% include '../Partials/Account/profileSettings.html' %}
+          </div>
+          </div>
+        {% endif %}        
+
+        <div class="col-xl-8 order-xl-1" id="products-stage">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                  <h3 class="ml-2 mb-0">Ürünler ({{products|length}})</h3>
+                  {% if user.is_authenticated and user.username == current_profile.username %}
+                    <button class="btn btn-info ml-auto mr-2 mb-0" id="open-add-product-form">Ürün Ekle</button>
+                  {% endif %}
+              </div>  
+            </div>
+            <div class="card-body">
+              <div class="row">
+                {% if products|length == 0 %}
+                  <div class="col-md-12 text-center">
+                    <p>Görüntülenecek Ürün Yoktur..</p>
+                  </div>
+                {% else %}
+                {% for current_product in products %}
+                  <div class="col-lg-3 col-md-4 col-s-6 col-xs-12 pb-1">
+                      <div class="card mb-4">
+                          <a href="{% url 'productDetailPage' current_product.slug %}">
+                              <div class="card-header justify-content-center product-img">
+                                  <img class="img-fluid w-100" src="{{current_product.image1.url}}" alt="">
+                              </div>
+                              <div class="card-body text-center p-0 pt-4 pb-3 justify-content-center">
+                                  <h4 class="pt-3 text-truncate mb-3">{{current_product.name}}</h4>
+                              </div>
+                          </a>
+                          <div class="card-footer d-flex justify-content-between bg-light border">
+                              <span class="btn-sm text-dark p-0"><i class="fas fa-solid fa-location-dot text-primary mr-1"></i> {% if current_product.user.address.city %} {{current_product.user.address.city}} {% endif %} {% if current_product.user.address.district %} {{current_product.user.address.district}} {% endif %}</span>
+                              <span  class="btn-sm text-dark p-0"><i class="fas fa-solid fa-coins text-primary mr-1"></i> {{current_product.price}} {{current_product.currency.currency_symbol}}</span>
+                          </div>
+                      </div>
+                  </div>
+                {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+
+  <!-- Sweet Alert Setups -->
+  <!-- <script src="sweetalert2.all.min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+  <script type="text/javascript">
+    $(document).on('submit', '#changeInfos', function(e){
+        e.preventDefault()
+
+        var slug = ""
+        if ('{{request.user.username}}'.length >= 2){
+          slug = '{{user.slug}}'
+        }else{
+          slug = ""
+        }
+        _url = `/account/profile/${slug}/change-infos`
+        
+
+        $.ajax({
+            type: 'POST',
+            url: _url,
+            data: {
+                username: $('#input-username').val(),
+                name: $('#input-name').val(),
+                first_name: $('#input-first-name').val(),
+                last_name: $('#input-last-name').val(),
+                tc: $('#input-tc').val(),
+                full_address: $('#input-full-address').val(),
+                country: $('#input-country').val(),
+                city: $('#input-city').val(),
+                district: $('#input-district').val(),
+                neighbourhood: $('#input-neighbourhood').val(),
+                email: $('#input-email').val(),
+                phone_num: $('#input-phone_num').val(),
+                tax_num: $('#input-tax_num').val(),
+                description: $('#input-description').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(response){
+              if (response.success){     
+                  if (response.slug){
+                    setTimeout(() => {
+                    location.replace(response.slug)
+                  }, 1500); 
+                  }
+                  Swal.fire({
+                      position: 'top-end',
+                      icon: 'success',
+                      title: response.success,
+                      showConfirmButton: false,
+                      timer: 1500
+                  })
+              }else if (response.error){
+                  Swal.fire({
+                      position: 'top-end',
+                      icon: 'error',
+                      title: response.error,
+                      showConfirmButton: false,
+                      timer: 1500
+                  })
+              }
+            }
+        })
+    });
+    
+    $(document).on('submit', '#changePass', function(e){
+        e.preventDefault()
+
+        var slug = ""
+        if ('{{request.user.username}}'.length >= 2){
+          slug = '{{user.slug}}'
+        }else{
+          slug = ""
+        }
+        _url = `/account/profile/${slug}/change-password`
+        $.ajax({
+            type: 'POST',
+            url: _url,
+            data: {
+                active_password: $('#input-active-pass').val(),
+                new_password: $('#input-new-pass').val(),
+                new_password_again: $('#input-new-pass-again').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(response){
+              if (response.success){     
+                  setTimeout(() => {
+                    location.replace('/account/login')
+                  }, 1500); 
+                  Swal.fire({
+                      position: 'top-end',
+                      icon: 'success',
+                      title: response.success,
+                      showConfirmButton: false,
+                      timer: 1500
+                  })
+              }else if (response.error){
+                  Swal.fire({
+                      position: 'top-end',
+                      icon: 'error',
+                      title: response.error,
+                      showConfirmButton: false,
+                      timer: 1500
+                  })
+              }
+              
+            },
+        })
+    });
+  </script>
+
+  <script src="{% static 'ProfilePageCss/main.js' %}"></script>
+    
+  </footer>
+
+</body>
+</html>

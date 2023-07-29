@@ -1,0 +1,15 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<div class="container-fluid bg-secondary" height="130px">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 130px">
+			{% if success %}
+				<h1 class="font-weight-semi-bold mb-3"> {{success}} </h1>
+			{% endif %}
+			{% if error %}
+			<h1 class="font-weight-semi-bold mb-3"> {{error}} </h1>
+			{% endif %}
+            <div class="d-inline-flex">
+                <p class="m-0"><a class="btn btn-primary border" href="{% url 'loginPage' %}">Giriş Sayfası</a></p> 
+            </div>
+        </div>
+    </div>	

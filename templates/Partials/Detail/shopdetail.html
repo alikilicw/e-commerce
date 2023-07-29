@@ -1,0 +1,162 @@
+{% load static %}
+<div class="col-lg-10 col-md-12 pb-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-5 pb-5">
+            <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner border">
+
+
+                    <div class="carousel-item active">
+                        <img class="w-100 h-100" src="{{current_product.image1.url}}" alt="Image">
+                    </div>
+                    {% if current_product.image2 %}
+                    <div class="carousel-item">
+                        <img class="w-100 h-100" src="{{current_product.image2.url}}" alt="Image">
+                    </div>
+                    {% endif %}
+                    {% if current_product.image3 %}
+                    <div class="carousel-item">
+                        <img class="w-100 h-100" src="{{current_product.image3.url}}" alt="Image">
+                    </div>
+                    {% endif %}
+                </div>
+                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                    <i class="fa fa-2x fa-angle-left text-dark"></i>
+                </a>
+                <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                    <i class="fa fa-2x fa-angle-right text-dark"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-7 pb-5">
+            <h4 class="font-weight-medium">{{current_product.name}}</h4>
+            <div class="d-flex mb-3">
+                <small class="pt-1">{{product_reviews_length}} Yorum</small>
+            </div>
+            <h4 class="font-weight-semi-bold mb-4">{{current_product.price}} {{current_product.currency.currency_symbol}}</h4>
+            <p class="mb-4">{{current_product.description}}</p>
+            <div class="d-flex align-items-center mb-4 pt-2">
+
+                {% if favorite %}
+                    <button id="add-favorites" style="display:none;" name="{{current_product.slug}}" class="btn btn-primary px-3"><i class="fas fa-regular fa-star mr-1"></i>Favoriye Ekle</button>
+                    <button id="discard-favorites" name="{{current_product.slug}}" class="btn btn-primary px-3"><i class="fas fa-regular fa-star mr-1"></i>Favoriden Çıkar</button>
+                {% else %}
+                    <button id="discard-favorites" style="display:none;" name="{{current_product.slug}}" class="btn btn-primary px-3"><i class="fas fa-regular fa-star mr-1"></i>Favoriden Çıkar</button>
+                    <button id="add-favorites"  name="{{current_product.slug}}" class="btn btn-primary px-3"><i class="fas fa-regular fa-star mr-1"></i>Favoriye Ekle</button>
+                {% endif %}
+
+            </div>
+            <div class="d-flex pt-2">
+                <p class="text-dark font-weight-medium mb-0 mr-2">Üretici:</p>
+                <div class="d-inline-flex">
+                    <a href="{% url 'profilePage' current_product.user.slug %}"> {% if current_product.user.name %} {{current_product.user.name}} {% else %} {{current_product.user.first_name}} {{current_product.user.last_name}} {% endif %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-1">Ürün Açıklamaları</a>
+                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-2">Ürünün Yorumları ({{product_reviews_length}})</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Üreticinin Yorumları ({{seller_reviews|length}})</a>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane fade" id="tab-pane-1">
+                    <h4 class="mb-3">Product Description</h4>
+                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
+                    <p>Dolore magna est eirmod sanctus dolor, amet diam et eirmod et ipsum. Amet dolore tempor consetetur sed lorem dolor sit lorem tempor. Gubergren amet amet labore sadipscing clita clita diam clita. Sea amet et sed ipsum lorem elitr et, amet et labore voluptua sit rebum. Ea erat sed et diam takimata sed justo. Magna takimata justo et amet magna et.</p>
+                </div>
+                <div class="tab-pane fade show active" id="tab-pane-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="mb-4"> {% if product_reviews_length > 0 %} {{current_product.name}} ürünü için {{product_reviews_length}} yorum var. {% else %} {{current_product.name}} ürünü için henüz yorum yok. {% endif %} </h4>
+                                {% for review in product_reviews %}
+                                    <div class="media mb-4">
+                                        <div class="media-body">
+                                            <h6> {% if review.from_user.first_name %} {{review.from_user.first_name}} {{review.from_user.last_name}} {% else %} {{review.from_user.name}} {% endif %} <small> - <i>{{review.review_date}}</i></small></h6>
+                                            <p>{{review.review_text}}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {% if product_all_reviews_link %}
+                                    <div class="col-12 pb-1">
+                                        <a href="{% url 'productCommentPage' slug %}">Tüm Değerlendirmeler</a>
+                                    </div>
+                                {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            {% if user.is_authenticated and user.username != current_product.user.username %}
+                                <h4 class="mb-4">Ürün ile ilgili düşünceleriniz.</h4>
+                                <br>
+                                <form id="review-to-product-form" method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input name="current_product_slug" id='current-product-slug' value="{{slug}}" style="display: none;">
+                                        <textarea required name="review_to_product" id="review-to-product-input" rows="5" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <input type="submit" value="Gönder" class="btn btn-primary px-3">
+                                    </div>
+                                </form>
+                            {% elif user.username == current_product.user.username %}
+                                <h4 class="mb-4">Kendi ürününüze yorum yapamazsınız.</h4>
+                                <br>
+                            {% else %}
+                                <h4 class="mb-4">Yorum yapmak için <a href="{% url 'loginPage' %}">giriş</a> yapınız.</h4>
+                                <br>    
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tab-pane-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {% if seller_reviews|length > 0 %}
+                                <h4 class="mb-4"> {% if current_product.user.name %} {{current_product.user.name}} {% else %} {{current_product.user.first_name}} {{current_product.user.last_name}} {% endif %} üreticisi için {{seller_reviews|length}} yorum var.</h4>
+                            {% else %}
+                                <h4 class="mb-4"> {% if current_product.user.name %} {{current_product.user.name}} {% else %} {{current_product.user.first_name}} {{current_product.user.last_name}} {% endif %} üreticisi için henüz yorum yok.</h4>
+                            {% endif %}
+                            {% for review in seller_reviews %}
+                                <div class="media mb-4">
+                                    <div class="media-body">
+                                        <h6> {% if review.from_user.first_name %} {{review.from_user.first_name}} {{review.from_user.last_name}} {% else %} {{review.from_user.name}} {% endif %} <small> - <i>{{review.review_date}}</i></small></h6>
+                                        <p>{{review.review_text}}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% if seller_all_reviews_link %}
+                                <div class="col-12 pb-1">
+                                    <a href="{% url 'sellerCommentPage' slug %}">Tüm Değerlendirmeler</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            {% if user.is_authenticated and user.username != current_product.user.username %}
+                                <h4 class="mb-4">Satıcı ile ilgili düşünceleriniz.</h4>
+                                <br>
+                                <form id="review-to-seller-form" method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input name="current_seller_slug" id='current-seller-slug' value="{{current_product.user.slug}}" style="display: none;">
+                                        <textarea required name="review_to_seller" id="review-to-seller-input" rows="5" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <input type="submit" value="Gönder" class="btn btn-primary px-3">
+                                    </div>
+                                </form>
+                            {% elif user.username == current_product.user.username %}
+                                <h4 class="mb-4">Kendi mağazanıza yorum yapamazsınız.</h4>
+                                <br>
+                            {% else %}
+                                <h4 class="mb-4">Yorum yapmak için <a href="{% url 'loginPage' %}">giriş</a> yapınız.</h4>
+                                <br>    
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

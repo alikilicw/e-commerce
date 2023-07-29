@@ -1,0 +1,82 @@
+{% load static %}
+
+{% include '../Partials/header.html' %}
+
+<body>
+    <!-- Topbar Start -->
+    {% include '../Partials/topbar.html' %}
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    {% include '../Partials/Detail/navbar.html' %} 
+    <!-- Navbar End -->
+
+
+    <!-- Comment Start -->
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+                <a class="nav-item nav-link {% if 'product-comments' in request.get_full_path %} active {% endif %} " href="{% url 'productCommentPage' slug %}">Ürünün Yorumları ({{product_reviews_length}})</a>
+                <a class="nav-item nav-link {% if 'seller-comments' in request.get_full_path %} active {% endif %} " href="{% url 'sellerCommentPage' slug %}">Üreticinin Yorumları ({{seller_reviews_length}})</a>
+            </div>
+            <div class="container">
+                {% if 'product-comments' in request.get_full_path %}
+                <div class="tab-pane">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="mb-4"> {% if product_reviews_length > 0 %} {{current_product.name}} ürünü için {{product_reviews_length}} yorum var. {% else %} {{current_product.name}} ürünü için henüz yorum yok. {% endif %} </h4>
+                                {% for review in reviews %}
+                                    <div class="media mb-4">
+                                        <div class="media-body">
+                                            <h6> {% if review.from_user.first_name %} {{review.from_user.first_name}} {{review.from_user.last_name}} {% else %} {{review.from_user.name}} {% endif %} <small> - <i>{{review.review_date}}</i></small></h6>
+                                            <p>{{review.review_text}}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                
+                                {% if product_all_reviews_link %}
+                                {% include '../Partials/Detail/comment-pagination.html' %}
+                                {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if 'seller-comments' in request.get_full_path %}
+                <div class="tab-pane">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {% if seller_reviews_length > 0 %}
+                                <h4 class="mb-4"> {% if current_product.user.name %} {{current_product.user.name}} {% else %} {{current_product.user.first_name}} {{current_product.user.last_name}} {% endif %} üreticisi için {{seller_reviews_length}} yorum var.</h4>
+                            {% else %}
+                                <h4 class="mb-4"> {% if current_product.user.name %} {{current_product.user.name}} {% else %} {{current_product.user.first_name}} {{current_product.user.last_name}} {% endif %} üreticisi için henüz yorum yok.</h4>
+                            {% endif %}
+                            {% for review in seller_reviews %}
+                                <div class="media mb-4">
+                                    <div class="media-body">
+                                        <h6> {% if review.from_user.first_name %} {{review.from_user.first_name}} {{review.from_user.last_name}} {% else %} {{review.from_user.name}} {% endif %} <small> - <i>{{review.review_date}}</i></small></h6>
+                                        <p>{{review.review_text}}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            {% if seller_all_reviews_link %}
+                            {% include '../Partials/Detail/comment-pagination.html' %}
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>    
+    <!-- Comment End -->
+
+
+    <!-- Footer Start -->
+    {% include '../Partials/footer.html' %}
+    <!-- Footer End -->
+
+</body></html>
